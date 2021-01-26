@@ -9,7 +9,7 @@ namespace SortingAlgorithms
         static void Main(string[] args)
         {
             int[] array = { 4, 1, 3, 2, 5};
-            QuickSort(array, 1, 3);
+            MergeSort(array, 0, 4);
             for(int i = 0; i < array.Length; i++)
             {
                 Console.WriteLine(array[i]);
@@ -94,7 +94,7 @@ namespace SortingAlgorithms
         {
             if(left < right)
             {
-                int pivotIndex = Partition(array, left, right);
+                int pivotIndex = OtherPartition(array, left, right);
                 QuickSort(array, left, pivotIndex - 1);
                 QuickSort(array, pivotIndex + 1, right);
             }
@@ -153,6 +153,54 @@ namespace SortingAlgorithms
                 array[arrayCount++] = newArray[i];
             }
             return right - newArrayCount + 1;
+        }
+
+        private static void MergeSort(int[] array, int left, int right)
+        {
+            if(left < right)
+            {
+                int mid = (left + right) / 2;
+                MergeSort(array, left, mid);
+                MergeSort(array, mid + 1, right);
+                Merge(array, left, mid, right);
+            }
+        }
+
+        private static void Merge(int[] array, int left, int mid, int right)
+        {
+            int[] newArray = new int[right - left + 1];
+            int newArrayCount = 0;
+            int lCount = left;
+            int rCount = mid + 1;
+            while((lCount <= mid) && (rCount <= right))
+            {
+                if(array[lCount] <= array[rCount])
+                {
+                    newArray[newArrayCount++] = array[lCount++];
+                }
+                else
+                {
+                    newArray[newArrayCount++] = array[rCount++];
+                }
+            }
+            if(lCount > mid)
+            {
+                while(rCount <= right)
+                {
+                    newArray[newArrayCount++] = array[rCount++];
+                }
+            }
+            else
+            {
+                while(lCount <= mid)
+                {
+                    newArray[newArrayCount++] = array[lCount++];
+                }
+            }
+            for( newArrayCount = 0; newArrayCount < right - left + 1; newArrayCount++)
+            {
+                array[left + newArrayCount] = newArray[newArrayCount];
+            }
         }
     }
 }
