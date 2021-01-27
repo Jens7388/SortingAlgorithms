@@ -8,8 +8,8 @@ namespace SortingAlgorithms
     {
         static void Main(string[] args)
         {
-            int[] array = { 4, 1, 3, 2, 5};
-            MergeSort(array, 0, 4);
+            int[] array = { 4, 1, 3, 2, 5, 7, 6, 9, 8};
+            HeapSort(array, array.Length -1);
             for(int i = 0; i < array.Length; i++)
             {
                 Console.WriteLine(array[i]);
@@ -64,6 +64,7 @@ namespace SortingAlgorithms
             }
         }
 
+        /*
         private static void TreeSort(int[] array)
         {
             SortedSet<int> t = new();
@@ -73,7 +74,7 @@ namespace SortingAlgorithms
             }
             FillArray(t, array, 0);
         }
-
+        
         private static int FillArray(SortedSet<int> t, int[] array, int j)
         {
             if(t.Count != 0)
@@ -83,26 +84,67 @@ namespace SortingAlgorithms
               //  j = FillArray(t.Max, array, j)
             }
             return j;
+        }*/
+
+        private static void HeapSort(int[] array, int n)
+        {
+            // Build heap (rearrange array)
+            for(int i = n / 2; i >= 0; i--)
+            {
+                Heapify(array, n, i);
+            }
+            // One by one extract an element from heap
+            for(int i = n; i > 0; i--)
+            {
+                // Move current root to end 
+                (array[0], array[i]) = (array[i], array[0]);
+                // call max heapify on the reduced heap
+                Heapify(array, i, 0);
+            }
         }
 
-        private static void HeapSort(int[] array)
+        private static void Heapify(int[] array, int n, int i)
         {
-            //TODO
+            int largest = i; // Initialize largest as root
+            int left = 2 * i + 1;
+            int right = 2 * i + 2; 
+
+            // If left child is larger than root
+            if(left < n && array[left] > array[largest])
+            {
+                largest = left;
+            }
+
+            // If right child is larger than largest so far
+            if(right < n && array[right] > array[largest])
+            {
+                largest = right;
+            }
+
+            // If largest is not root
+            if(largest != i)
+            {
+                (array[largest], array[i]) = (array[i], array[largest]);
+
+                // Recursively heapify the affected sub-tree
+                Heapify(array, n, largest);
+            }
         }
 
         private static void QuickSort(int[] array, int left, int right)
         {
             if(left < right)
             {
-                int pivotIndex = OtherPartition(array, left, right);
-                QuickSort(array, left, pivotIndex - 1);
-                QuickSort(array, pivotIndex + 1, right);
+                //int pivotIndex = 
+                    OtherPartition(array, left, right);
+                //QuickSort(array, left, pivotIndex - 1);
+           //     QuickSort(array, pivotIndex + 1, right);
             }
         }
 
         private static int Partition(int[] array, int left, int right)
         {
-            int pivotIndex = array[(array.Length - 1) / 2];
+            int pivotIndex = (array.Length - 1) / 2;
             int pivot = array[pivotIndex];
             (array[pivotIndex], array[right]) = (array[right], array[pivotIndex]);
             int leftMark = left;
@@ -129,7 +171,7 @@ namespace SortingAlgorithms
         private static int OtherPartition(int[] array, int left, int right)
         {
             int[] newArray = new int[right - left + 1];
-            int pivotIndex = array[(array.Length - 1) / 2];
+            int pivotIndex = (array.Length - 1) / 2;
             int pivot = array[pivotIndex];
             int arrayCount = left;
             int newArrayCount = 1;
@@ -155,6 +197,7 @@ namespace SortingAlgorithms
             return right - newArrayCount + 1;
         }
 
+        //Splits array into 2 smaller arrays, orders items in the first array, then 1 by 1 inserts and sorts all items from the second array to the first.
         private static void MergeSort(int[] array, int left, int right)
         {
             if(left < right)
