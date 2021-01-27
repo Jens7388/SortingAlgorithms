@@ -16,13 +16,15 @@ namespace SortingAlgorithms
             }
         }
 
-        //Compares the last item with the 1 before it, and swaps them if they are not in the correct order. Repeats this process "n" times.
         private static void BubbleSort(int[] array)
         {
+            //Extract items from array
             for(int i = 1; i < array.Length; i++)
             {
+                //Find last item in array
                 for(int j = array.Length -1; j >= i; j--)
                 {
+                    //Swap items if item number "j - 1" is larger than item "j"
                     if(array[j] < array[j - 1])
                     {
                         (array[j -1], array[j]) = (array[j], array[j-1]);
@@ -31,13 +33,15 @@ namespace SortingAlgorithms
             }
         }
 
-        //Goes through the entire array to check if item "j" is in the correct spot. Repeats for every item
         private static void InsertionSort(int[] array)
         {
+            //Extract items from array
             for(int i = 1; i < array.Length; i++)
             {
                 int j = i;
                 int t = array[j];
+
+                //While item "j" is NOT ordered correctly, move it around the array until it is
                 while (j > 0 && t < array[j -1])
                 {
                     array[j] = array[j - 1];
@@ -47,14 +51,17 @@ namespace SortingAlgorithms
             }
         }
 
-        //Finds the smallest item in the array, and puts it in the correct place. Repeats for all remaining unsorted items.
         private static void SelectionSort(int[] array)
         {
+            //Extract items from array
             for(int i = 0; i < array.Length -1; i++)
             {
                 int k = i;
+
+                //Find smallest item in array
                 for(int j = i+1; j < array.Length; j++)
                 {
+                    //If the current item is smaller than the first unordered item, swap the two items.
                     if(array[j] < array[k])
                     {
                         k = j;
@@ -142,6 +149,8 @@ namespace SortingAlgorithms
             }
         }
 
+
+        //Not in use!
         private static int Partition(int[] array, int left, int right)
         {
             int pivotIndex = (array.Length - 1) / 2;
@@ -149,6 +158,7 @@ namespace SortingAlgorithms
             (array[pivotIndex], array[right]) = (array[right], array[pivotIndex]);
             int leftMark = left;
             int rightMark = right - 1;
+
             while(leftMark <= rightMark)
             {
                 while(leftMark <= rightMark && array[leftMark] <= pivot)
@@ -170,11 +180,16 @@ namespace SortingAlgorithms
 
         private static int OtherPartition(int[] array, int left, int right)
         {
+            //Create new array half as long as the original array
             int[] newArray = new int[right - left + 1];
+
+            //Find centre index of original array
             int pivotIndex = (array.Length - 1) / 2;
             int pivot = array[pivotIndex];
+
             int arrayCount = left;
             int newArrayCount = 1;
+
             for(int i = left; i <= right; i++)
             {
                 if(i== pivotIndex)
