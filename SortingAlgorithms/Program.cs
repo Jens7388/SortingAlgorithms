@@ -275,19 +275,17 @@ namespace SortingAlgorithms
         {
             if(left < right)
             {
-                
-
+                //Split up array and puts new arrays items in the correct order recursively
                 int mid = (left + right) / 2;
                 MergeSort(array, left, mid);
                 MergeSort(array, mid + 1, right);
-                Merge(array, left, mid, right);
-
-                
+                Merge(array, left, mid, right);   
             }
         }
 
         private static void Merge(int[] array, int left, int mid, int right)
         {
+            //Create new array half as long as the original array
             int[] newArray = new int[right - left + 1];
             int newArrayCount = 0;
             int lCount = left;
@@ -320,6 +318,18 @@ namespace SortingAlgorithms
             for( newArrayCount = 0; newArrayCount < right - left + 1; newArrayCount++)
             {
                 array[left + newArrayCount] = newArray[newArrayCount];
+            }
+        }
+
+        private static void HybridSort(int[] array)
+        {
+            if(array.Length <= 150)
+            {
+                InsertionSort(array);
+            }
+            else
+            {
+                QuickSort(array, 0, array.Length - 1);
             }
         }
 
