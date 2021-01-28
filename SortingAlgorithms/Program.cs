@@ -9,7 +9,7 @@ namespace SortingAlgorithms
     {
         static void Main(string[] args)
         {
-            int[] array = new int[10];
+            int[] array = new int[1000];
             
             SetArrayValues(array);
             BubbleSort(array);
@@ -35,6 +35,9 @@ namespace SortingAlgorithms
             timer.Stop();
             Console.WriteLine($"MergeSort: {timer.ElapsedTicks}");
             timer.Reset();
+
+            SetArrayValues(array);
+            HybridSort(array);
         }
 
         private static void BubbleSort(int[] array)
@@ -322,9 +325,10 @@ namespace SortingAlgorithms
         }
 
         private static void HybridSort(int[] array)
-        {
+        {         
             if(array.Length <= 150)
             {
+
                 InsertionSort(array);
             }
             else
