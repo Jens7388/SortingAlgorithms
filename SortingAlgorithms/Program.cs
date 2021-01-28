@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace SortingAlgorithms
 {
@@ -8,16 +9,39 @@ namespace SortingAlgorithms
     {
         static void Main(string[] args)
         {
-            int[] array = { 4, 1, 3, 2, 5, 7, 6, 9, 8};
+            int[] array = new int[10];
+            
+            SetArrayValues(array);
+            BubbleSort(array);
+
+            SetArrayValues(array);
+            InsertionSort(array);
+
+            SetArrayValues(array);
+            SelectionSort(array);
+
+            SetArrayValues(array);
             HeapSort(array, array.Length -1);
-            for(int i = 0; i < array.Length; i++)
-            {
-                Console.WriteLine(array[i]);
-            }
+            
+            SetArrayValues(array);
+            QuickSort(array, 0, array.Length - 1);
+            
+            SetArrayValues(array);
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+
+            MergeSort(array, 0, array.Length - 1);
+
+            timer.Stop();
+            Console.WriteLine($"MergeSort: {timer.ElapsedTicks}");
+            timer.Reset();
         }
 
         private static void BubbleSort(int[] array)
         {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+
             //Extract items from array
             for(int i = 1; i < array.Length; i++)
             {
@@ -31,10 +55,16 @@ namespace SortingAlgorithms
                     }
                 }
             }
+            timer.Stop();
+            Console.WriteLine($"BubbleSort: {timer.ElapsedTicks}");
+            timer.Reset();
         }
 
         private static void InsertionSort(int[] array)
         {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+
             //Extract items from array
             for(int i = 1; i < array.Length; i++)
             {
@@ -49,10 +79,16 @@ namespace SortingAlgorithms
                 }
                 array[j] = t;
             }
+            timer.Stop();
+            Console.WriteLine($"InsertionSort: {timer.ElapsedTicks}");
+            timer.Reset();
         }
 
         private static void SelectionSort(int[] array)
         {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+
             //Extract items from array
             for(int i = 0; i < array.Length -1; i++)
             {
@@ -69,6 +105,9 @@ namespace SortingAlgorithms
                     (array[i], array[k]) = (array[k], array[i]);
                 }
             }
+            timer.Stop();
+            Console.WriteLine($"SelectionSort: {timer.ElapsedTicks}");
+            timer.Reset();
         }
 
         /*
@@ -95,6 +134,9 @@ namespace SortingAlgorithms
 
         private static void HeapSort(int[] array, int n)
         {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+
             // Build heap (rearrange array)
             for(int i = n / 2; i >= 0; i--)
             {
@@ -108,6 +150,10 @@ namespace SortingAlgorithms
                 // call max heapify on the reduced heap
                 Heapify(array, i, 0);
             }
+            
+            timer.Stop();
+            Console.WriteLine($"HeapSort: {timer.ElapsedTicks}");
+            timer.Reset();
         }
 
         private static void Heapify(int[] array, int n, int i)
@@ -142,10 +188,17 @@ namespace SortingAlgorithms
         {
             if(left < right)
             {
+                Stopwatch timer = new Stopwatch();
+                timer.Start();
+
                 //int pivotIndex = 
-                    OtherPartition(array, left, right);
+                OtherPartition(array, left, right);
                 //QuickSort(array, left, pivotIndex - 1);
-           //     QuickSort(array, pivotIndex + 1, right);
+                //     QuickSort(array, pivotIndex + 1, right);
+
+                timer.Stop();
+                Console.WriteLine($"QuickSort: {timer.ElapsedTicks}");
+                timer.Reset();
             }
         }
 
@@ -189,22 +242,27 @@ namespace SortingAlgorithms
 
             int arrayCount = left;
             int newArrayCount = 1;
-
+            
+            //Extract items from array
             for(int i = left; i <= right; i++)
             {
+                //If item "i" is the centre index, insert "i" into the new array as the first item.
                 if(i== pivotIndex)
                 {
                     newArray[0] = array[i];
                 }
+                //Else if item "i" is smaller than the centre item or is equal to the centre item while preceeding it, move the item to the front half of the array.
                 else if(array[i] < pivot || (array[i] == pivot && i < pivotIndex))
                 {
                     array[arrayCount++] = array[i];
                 }
+                //Otherwise insert item "i" into the new array.
                 else
                 {
                     newArray[newArrayCount++] = array[i];
                 }
             }
+            //Extract items from the new array, and insert them into to the old array.
             for(int i = 0; i < newArrayCount; i++)
             {
                 array[arrayCount++] = newArray[i];
@@ -217,10 +275,14 @@ namespace SortingAlgorithms
         {
             if(left < right)
             {
+                
+
                 int mid = (left + right) / 2;
                 MergeSort(array, left, mid);
                 MergeSort(array, mid + 1, right);
                 Merge(array, left, mid, right);
+
+                
             }
         }
 
@@ -258,6 +320,23 @@ namespace SortingAlgorithms
             for( newArrayCount = 0; newArrayCount < right - left + 1; newArrayCount++)
             {
                 array[left + newArrayCount] = newArray[newArrayCount];
+            }
+        }
+
+        private static void SetArrayValues(int[] array)
+        {
+            int n = array.Length;
+            for(int i = 0; i < n / 3; i++)
+            {
+                array[i] = 3;
+            }
+            for(int i = n / 3; i < n / 2 + 1; i++)
+            {
+                array[i] = 2;
+            }
+            for(int i = n / 2 + 1; i < n; i++)
+            {
+                array[i] = 1;
             }
         }
     }
